@@ -1,0 +1,53 @@
+
+body{
+    background-image: url(Images/bg.png);
+}
+.col1a{
+    margin-top: 100px;
+    background-color: black;
+    border-radius: 20px;
+    border: solid 10px;
+    border-color: blue;
+    padding: 20px;
+}
+.contender{
+    text-align: center;
+    color: yellow;
+}
+.versus{
+    text-align: center;
+    color: red;
+}
+.result{
+    text-align: center;
+    color: green;
+}
+.button-container{
+    width: 100%;
+    padding: 20px 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.button-container button{
+    margin-left: 5px;
+}
+.choiceBtn{
+    background: none;
+    border: none;
+    border: solid blue 2px;
+    padding: 10px 15px;
+    border-radius: 20px;
+    width: 30%;
+    cursor: pointer;
+    transition: 0.5s;
+    font-weight: bold;
+}
+.choiceBtn:hover{
+    background-color: yellow;
+    color: blue;
+}
+.button-active {
+    background-color: yellow;
+    color: blue;
+}

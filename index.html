@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="Images/icon.png">
+    <title>Rock, Paper, Scissors Game!</title>
+    <style>
+        
+        body{
+            background-image: url(Images/bg.png);
+        }
+        .col1a{
+            margin-top: 100px;
+            background-color: black;
+            border-radius: 20px;
+            border: solid 10px;
+            border-color: blue;
+            padding: 20px;
+        }
+        .col1a h1{
+            text-align: center;
+            color: white;
+        }
+        .col1b{
+            margin-top: 100px;
+            background-color: black;
+            border-radius: 20px;
+            border: solid 10px;
+            border-color: blue;
+            padding: 20px;
+        }
+        .col1b h2, h3{
+            text-align: center;
+            color: white;
+        }
+        .contender{
+            text-align: center;
+            color: yellow;
+        }
+        .versus{
+            text-align: center;
+            color: white;
+        }
+        .result{
+            text-align: center;
+        }
+        .winner{
+            text-align: center;
+            color: green;
+        }
+        .loser{
+            text-align: center;
+            color: red;
+        }
+        .draw{
+            text-align: center;
+            color: white;
+        }
+        #matchHistory{
+            text-align: start;
+            color: white;
+            
+        }
+        #btn{
+            background: none;
+            border: none;
+            border: solid blue 2px;
+            color: white;
+            width: 100%;
+            padding: 10px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: 0.5s;
+            font-weight: bold;
+        }
+        #btn:hover{
+            background-color: yellow;
+            color: blue;
+        }
+        .button-container{
+            width: 100%;
+            padding: 20px 0px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .button-container button{
+            margin-left: 5px;
+        }
+        .curve-button{
+            background: none;
+            border: none;
+            border: solid blue 2px;
+            color: white;
+            width: 30%;
+            padding: 10px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: 0.5s;
+            font-weight: bold;
+        }
+        .curve-button:hover{
+            background-color: yellow;
+            color: blue;
+        }
+        .button-active {
+            background-color: yellow;
+            color: blue;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container container1">
+
+
+        <div class="row align-items-center">
+
+            <div class="col-md-5 col1a">
+                
+                <h1>Match History</h1>
+                <ul id="matchHistory">
+                </ul>
+                <button id="btn">Reset History</button>
+            </div>
+
+            <div class="col-md-1">
+
+            </div>
+
+            <div class="col-md-6 col1b" id="match">
+
+                
+                <h2>Best Of 10 Wins</h2>
+                <h3>
+                <span id="playerScore">0</span> - <span id="computerScore">0</span>
+                </h3>
+ 
+                <h1 class="contender" id="playerChoice"> Player</h1>
+                <h1 class="versus">VS</h1>
+                <h1 class="contender" id="computerChoice">Computer </h1>
+                <br>
+                <h1 class="result winner loser draw" id="matchResult">Match Result </h1>
+                
+                <div class="button-container">
+
+                    <button class="curve-button choiceBtn" id="One" onclick="selectBtn()">ROCK</button>
+                    <button class="curve-button choiceBtn" id="Two" onclick="selectBtn()">PAPER</button>
+                    <button class="curve-button choiceBtn" id="Three" onclick="selectBtn()">SCISSORS</button>
+
+                </div>
+        
+                 
+
+            </div>
+
+
+        </div>
+
+    </div>
+    
+</body>
+<script src="js/bootstrap.bundle.js"></script>
+<script>
+
+    const matchScore = document.querySelectorAll("#playerScore","#computerScore");
+    const playerChoice = document.querySelector("#playerChoice");
+    const computerChoice = document.querySelector("#computerChoice");
+    const matchResult = document.querySelector("#matchResult");
+    const choiceBtns = document.querySelectorAll(".choiceBtn");
+
+    let player;
+    let computer;
+    let result;
+    let playerScore = 0;
+    let computerScore = 0;
+
+    choiceBtns.forEach(button => button.addEventListener("click", () => {
+
+        player = button.textContent;
+        computerTurn();
+        playerChoice.textContent = `${player}`;
+        computerChoice.textContent = `${computer}`;
+        matchResult.textContent = matchWinner();
+        matchScore.textContent =  updateScore();
+        if (matchVictory()) {
+            playerScore = computerScore = 0;
+        updateScore();
+        }
+        
+    }));
+
+    function selectBtn(){
+
+        let date = new Date();
+
+        let buttons = document.querySelectorAll(".curve-button");
+
+        for (let i = 0; i < buttons.length; i++) {
+            buttons[i].classList.remove("button-active"); 
+        }
+
+        event.target.classList.add("button-active");
+
+        let playerOption = document.getElementById("playerChoice").innerHTML;
+        let computerOption = document.getElementById("computerChoice").innerHTML;
+        let resultOption = document.getElementById("matchResult").innerHTML;
+
+        let matchHistoryList = document.getElementById("matchHistory");
+        let listItem = document.createElement("ul");
+        listItem.innerHTML = `${playerOption} vs ${computerOption} : ${resultOption}`;
+        matchHistoryList.appendChild(listItem);
+
+        document.getElementById("playerChoice","computerChoice","matchResult").value = "","","";
+
+        
+
+    }
+
+    function computerTurn(){
+
+    const randNum = Math.ceil(Math.random() * 3);
+
+        if (randNum == 1) {
+            computer = "ROCK";
+        } else if (randNum == 2) {
+            computer = "PAPER";
+        } else if (randNum == 3) {
+            computer = "SCISSORS";
+        } else {
+            return
+        }
+    }
+    function matchWinner(){
+
+        if(player == computer){
+
+            let matchIndicator = document.getElementById("matchResult");
+            matchIndicator.classList.add("draw");
+            matchIndicator.classList.remove("winner","loser");
+
+            return "Draw!";
+        
+
+        }
+        else if(computer == "ROCK"){
+        if (player == "PAPER") {
+
+            let matchIndicator = document.getElementById("matchResult");
+            matchIndicator.classList.add("winner");
+            matchIndicator.classList.remove("draw","loser");
+
+            playerScore++;
+            return "You Win!";
+
+        } else {
+
+            let matchIndicator = document.getElementById("matchResult");
+            matchIndicator.classList.add("loser");
+            matchIndicator.classList.remove("draw","winner");
+
+            computerScore++;
+            return "You Lose!";
+
+        }
+        }
+        else if(computer == "PAPER"){
+        if (player == "SCISSORS") {
+
+            let matchIndicator = document.getElementById("matchResult");
+            matchIndicator.classList.add("winner");
+            matchIndicator.classList.remove("draw","loser");
+
+            playerScore++;
+            return "You Win!";
+
+        } else {
+
+            let matchIndicator = document.getElementById("matchResult");
+            matchIndicator.classList.add("loser");
+            matchIndicator.classList.remove("draw","winner");
+
+            computerScore++;
+            return "You Lose!";
+
+        }
+        }
+        else if(computer == "SCISSORS"){
+        if (player == "ROCK") {
+
+            let matchIndicator = document.getElementById("matchResult");
+            matchIndicator.classList.add("winner");
+            matchIndicator.classList.remove("draw","loser");
+
+            playerScore++;
+            return "You Win!";
+
+        }else {
+
+            let matchIndicator = document.getElementById("matchResult");
+            matchIndicator.classList.add("loser");
+            matchIndicator.classList.remove("draw","winner");
+
+            computerScore++;
+            return "You Lose!";
+
+        }
+        }
+
+    }
+    function updateScore() {
+
+        document.getElementById("playerScore").textContent = playerScore;
+        document.getElementById("computerScore").textContent = computerScore;
+    }
+    function matchVictory() {
+
+        if (playerScore === 10 || computerScore === 10) {
+            const winner =
+            playerScore === 10
+            return true;
+    }
+        return false;
+    }
+
+    function deleteChild() {
+        var e = document.querySelector("ul");
+        
+        //e.firstElementChild can be used.
+        var child = e.lastElementChild; 
+        while (child) {
+            e.removeChild(child);
+            child = e.lastElementChild;
+        }
+    }
+    var btn = document.getElementById(
+    "btn").onclick = function() {
+        deleteChild();
+    }
+
+</script>
+</html>
